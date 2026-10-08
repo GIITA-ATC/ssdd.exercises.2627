@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+message Request {
+    enum OperationType {
+        SUM = 0;
+        MULTIPLY = 1;
+    }
+
+    OperationType operation = 1;
+    repeated int32 numbers = 2;
+}
+
+message Response {
+    int64 result = 1;
+}

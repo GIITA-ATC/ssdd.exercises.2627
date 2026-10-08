@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+message ControlMessage {
+    enum Command {
+        CHECK_STATUS = 0;
+        OPEN = 1;
+        CLOSE = 2;
+    }
+
+    enum Mode {
+        VEHICLE = 0;
+        PEDESTRIAN = 1;
+    }
+
+    int32 id = 1;
+    Command command = 2;
+    Mode mode = 3;    // only for OPEN
+    int32 time = 4;   // only for OPEN: time to be open in seconds
+}
+
+message ResponseMessage {
+    enum Result {
+        OK = 0;
+        ALREADY_OPEN = 1;    // Used to indicate the state OPEN with CHECK_STATUS
+        ALREADY_CLOSED = 2;  // Used to indicate the state CLOSED with CHECK_STATUS
+        OBSTACLE_FOUND = 3;
+        MOTOR_ERROR = 4;
+    }
+
+    int32 id = 1;
+    Result result = 2;
+}

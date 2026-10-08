@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+message Success {
+    string message = 1;
+}
+
+message Error {
+  enum ErrorCode {
+    INTERNAL_ERROR = 0;
+    ALREADY_EXISTS = 1;
+    INVALID_CREDENTIALS = 2;
+    UNAUTHORIZED = 3;
+    NOT_FOUND = 4;
+    INVALID_DATA = 5;
+  }
+
+  ErrorCode code = 1;
+  string message = 2;
+}
+
+message Response{
+    oneof response {
+        Success success = 1;
+        Error error = 2;
+    }
+}
+
+message PostPhotoRequest {
+    repeated string credentials = 1;
+    string photo_url = 2;
+}  // Errors: 0, 1, 2
+
+message CommentPhotoRequest {
+    repeated string credentials = 1;
+    string owner_id = 2;
+    string photo_url = 3;
+    string comment = 4;
+}  // Errors: 0, 2, 4 (Photo or Owner)
+
+message RatePhotoRequest {
+    repeated string credentials = 1;
+    string owner_id = 2;
+    string photo_url = 3;
+    int32 rating = 4;
+}  // Errors: 0, 2, 4 (Photo or Owner), 5 (Rating)
+
+message LikePhotoRequest {
+    repeated string credentials = 1;
+    string photo_url = 2;
+    string owner_id = 3;
+}  // Errors: 0, 2, 4 (Photo or Owner)
+
+message DeletePhotoRequest {
+    repeated string credentials = 1;
+    string photo_url = 2;
+}  // Errors: 0, 2, 3, 4 (Photo)
+
+message GetLastPhotosRequest {
+    string user_id = 1;
+}  // Errors: 0, 4 (User)
+
+message GetLastPhotosResponse {
+    oneof response {
+        Success success = 1;
+        Error error = 2;
+    }
+    repeated string photo_urls = 3;
+}
+
+message Request {
+    oneof request {
+        PostPhotoRequest post_photo = 1;
+        CommentPhotoRequest comment_photo = 2;
+        RatePhotoRequest rate_photo = 3;
+        LikePhotoRequest like_photo = 4;
+        DeletePhotoRequest delete_photo = 5;
+        GetLastPhotosRequest get_last_photos = 6;
+    }
+}
