@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service Reservations {
+  rpc makeReservation (NewReservationRequest) returns (Reservation);
+  rpc checkReservation (ReservationIdRequest) returns (Reservation);
+  rpc cancelReservation (ReservationIdRequest) returns (google.protobuf.Empty);
+  rpc listReservations (google.protobuf.Empty) returns (ReservationsList);
+}
+
+message ReservationIdRequest {
+  int32 id = 1;
+}
+
+message NewReservationRequest {
+  google.protobuf.Timestamp time = 1;
+  int32 number_of_diners = 2;
+  string client_name = 3;
+  string contact_phone = 4;
+}
+
+message Reservation {
+  int32 id = 1;
+  google.protobuf.Timestamp time = 2;
+  int32 number_of_diners = 3;
+  string client_name = 4;
+  string contact_phone = 5;
+}
+
+message ReservationsList {
+  repeated Reservation reservations = 1;
+}
