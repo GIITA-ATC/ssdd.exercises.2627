@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+service Math {
+    rpc add (Request) returns (Response);
+    rpc multiply (Request) returns (Response);
+}
+
+message Request {
+    repeated int32 numbers = 2;
+}
+
+message Response {
+    int64 result = 1;
+}
